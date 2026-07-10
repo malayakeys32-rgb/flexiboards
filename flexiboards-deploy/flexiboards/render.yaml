@@ -1,0 +1,26 @@
+services:
+  # ── Backend API ────────────────────────────────────────────────────────────
+  - type: web
+    name: flexiboards-api
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 4000
+      - key: NODE_ENV
+        value: production
+
+  # ── Frontend (React) ───────────────────────────────────────────────────────
+  - type: web
+    name: flexiboards-app
+    env: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npx serve -s build -l 3000
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://flexiboards-api.onrender.com
+      - key: NODE_VERSION
+        value: 18
