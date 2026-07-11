@@ -1,0 +1,74 @@
+import React, { useState } from "react";
+
+interface Todo {
+  id: string;
+  text: string;
+  done: boolean;
+}
+
+export default function TodoPanel() {
+  const [items, setItems] = useState<Todo[]>([]);
+  const [text, setText] = useState("");
+
+  const add = () => {
+    if (!text.trim()) return;
+    setItems((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), text, done: false },
+    ]);
+    setText("");
+  };
+
+  const toggle = (id: string) =>
+    setItems((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
+    );
+
+  const remove = (id: string) =>
+    setItems((prev) => prev.filter((t) => t.id !== id));
+
+  return (
+    <div className="bg-[#0b0b12] border border-purple-700 rounded-xl p-6 text-white">
+      <h2 className="text-xl font-bold mb-3">To‑Do</h2>
+
+      <div className="flex gap-2 mb-4">
+        <input
+          className="flex-1 bg-[#111] px-3 py-2 rounded-lg"
+          placeholder="New task..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button
+          className="bg-purple-600 px-4 py-2 rounded-lg"
+          onClick={add}
+        >
+          Add
+        </button>
+      </div>
+
+      <ul className="space-y-2">
+        {items.map((t) => (
+          <li
+            key={t.id}
+            className="flex items-center justify-between bg-[#111] px-3 py-2 rounded-lg"
+          >
+            <span
+              className={`${
+                t.done ? "line-through text-gray-500" : "text-white"
+              }`}
+              onClick={() => toggle(t.id)}
+            >
+              {t.text}
+            </span>
+            <button
+              className="text-red-400 text-xs"
+              onClick={() => remove(t.id)}
+            >
+              delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

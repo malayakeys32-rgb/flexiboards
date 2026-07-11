@@ -1,0 +1,10 @@
+import AppLayout from "../../layouts/AppLayout";
+
+export default function PricingPage() {
+  return (
+    <AppLayout>
+      <h1 className="text-3xl font-bold mb-6">Pricing</h1>
+      {/* Pricing tiers you already have */}
+    </AppLayout>
+  );
+}
