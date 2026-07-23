@@ -1,0 +1,19 @@
+// frontend/src/App.jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ChatBox from "./components/AIChat/ChatBox.jsx";
+// import your existing pages...
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* existing routes */}
+        {/* <Route path="/" element={<Board />} /> */}
+
+        <Route path="/assistant" element={<ChatBox />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;

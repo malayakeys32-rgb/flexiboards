@@ -1,0 +1,18 @@
+// backend/server.js
+import express from "express";
+import aiRouter from "./ai/agent/router.js";
+
+const app = express();
+
+app.use(express.json());
+
+// existing routes...
+// app.use("/api/tasks", tasksRouter);
+// app.use("/api/notes", notesRouter);
+
+app.use("/api/ai", aiRouter);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

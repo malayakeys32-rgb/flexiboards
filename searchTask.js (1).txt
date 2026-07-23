@@ -1,0 +1,33 @@
+// backend/ai/tools/createTask.js
+import Task from "../../models/Task.js";
+
+export default {
+  name: "createTask",
+  description: "Create a new task from natural language",
+  parameters: {
+    type: "object",
+    properties: {
+      title: { type: "string" },
+      dueDate: { type: "string" },
+      priority: { type: "string" },
+      tags: {
+        type: "array",
+        items: { type: "string" },
+      },
+    },
+    required: ["title"],
+  },
+  async execute({ title, dueDate, priority, tags }) {
+    const task = await Task.create({
+      title,
+      dueDate: dueDate || null,
+      priority: priority || "normal",
+      tags: tags || [],
+    });
+
+    return {
+      success: true,
+      task,
+    };
+  },
+};

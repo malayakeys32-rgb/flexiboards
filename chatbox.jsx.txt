@@ -1,0 +1,67 @@
+// frontend/src/components/AIChat/ChatBox.jsx
+import { useState } from "react";
+
+export default function ChatBox() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+
+  async function sendMessage() {
+    if (!input.trim()) return;
+
+    const res = await fetch("/api/ai/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: input }),
+    });
+
+    const data = await res.json();
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: input },
+      { role: "assistant", content: data.output_text || "No response" },
+    ]);
+
+    setInput("");
+  }
+
+  return (
+    <div style={{ maxWidth: 600, margin: "0 auto", padding: 16 }}>
+      <h2>AI Assistant</h2>
+
+      <div
+        style={{
+          border: "1px solid #ccc",
+          borderRadius: 8,
+          padding: 8,
+          height: 300,
+          overflowY: "auto",
+          marginBottom: 8,
+        }}
+      >
+        {messages.map((m, i) => (
+          <div
+            key={i}
+            style={{
+              marginBottom: 6,
+              textAlign: m.role === "user" ? "right" : "left",
+            }}
+          >
+            <strong>{m.role === "user" ? "You" : "Assistant"}:</strong>{" "}
+            {m.content}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: "flex", gap: 8 }}>
+        <input
+          style={{ flex: 1, padding: 8 }}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask: What should I work on?"
+        />
+        <button onClick={sendMessage}>Send</button>
+      </div>
+    </div>
+  );
+}
